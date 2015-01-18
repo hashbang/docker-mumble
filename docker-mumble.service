@@ -1,0 +1,19 @@
+[Unit]
+Description=#! Mumble Server
+Author=Hashbang Team - team@hashbang.sh
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker run \
+  -v /home/core/mumble/certs:/etc/ssl/localcerts \
+  -v /home/core/mumble/lib:/var/lib/mumble-server \
+  -p 64738:64738 \
+  --rm \
+  --name="mumble" \
+  hashbang/mumble
+
+ExecStop=/usr/bin/docker stop mumble
+
+[Install]
+WantedBy=multi-user.target
