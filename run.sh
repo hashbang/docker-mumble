@@ -2,7 +2,10 @@ chown -R mumble: /var/lib/mumble-server
 
 touch /var/lib/mumble-server
 
-SUPW=`pwgen -c -n -1 15`
+
+if [ -z "$SUPW" ]; then
+    SUPW=`pwgen -c -n -1 15`
+fi
 
 echo "Superuser Password: $SUPW"
 
