@@ -5,7 +5,7 @@ touch /var/lib/mumble-server
 
 
 if [ -z "$SUPW" ]; then
-    SUPW="$(pwgen -c -n -1 15)"
+    SUPW="$(pwgen -s -c -n -1 15)"
 fi
 
 echo "Superuser Password: $SUPW"
