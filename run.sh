@@ -1,3 +1,4 @@
+#!/bin/sh
 chown -R mumble: /var/lib/mumble-server
 
 touch /var/lib/mumble-server
