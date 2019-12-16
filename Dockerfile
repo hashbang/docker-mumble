@@ -1,21 +1,20 @@
-FROM debian:jessie
+ARG DEBIAN_DIGEST=sha256:fea737064e4143c3400289f76d759d6a98a69c308032022ef34e31e01555ca97
+ARG DEBIAN_VERSION=buster-slim
+FROM debian:${DEBIAN_VERSION}@${DEBIAN_DIGEST}
 
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
-        sudo \
-        pwgen \
-        mumble-server && \
+        mumble-server=1.3.0~git20190125.440b173+dfsg-2 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN useradd mumble
+RUN useradd mumble -m -d /home/mumble
+ADD mumble-server.ini  /home/mumble/.murmurd/murmur.ini
 
-ADD mumble-server.ini  /etc/mumble-server.ini
-ADD run.sh /tmp/run.sh
-
-VOLUME ["/var/lib/mumble-server"]
-
+USER mumble
+WORKDIR /home/mumble
+RUN touch /home/mumble/mumble.log /home/mumble/mumble.sqlite
 EXPOSE 64738/tcp 64738/udp
-
-CMD ["bash","/tmp/run.sh"]
+ENTRYPOINT ["/usr/sbin/murmurd"]
+CMD ["-fg"]
